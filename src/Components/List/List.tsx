@@ -44,20 +44,26 @@ const List = observer(() => {
   return (
     <div className={s.wrapper}>
       <div className={s.sort__container}>
-        <p className={s.count}>Repository amount: {RepStore.pageCount}</p>
+        <p className={s.count}>Repository amount: {RepStore.itemCount}</p>
         <div className={s.sort__block}>
-          <Radio.Button onClick={handleSortAsc} value="ASC">Sort Asc</Radio.Button>
-          <Radio.Button onClick={handleSortDesc} value="DESC">Sort Desc</Radio.Button>
+          <Radio.Button onClick={handleSortAsc} value="ASC">Sort by asc</Radio.Button>
+          <Radio.Button onClick={handleSortDesc} value="DESC">Sort by desc</Radio.Button>
+        </div>
+        <div className={s.sort__block}>
+          <Radio.Button  value="stars">Sort by stars</Radio.Button>
+          <Radio.Button  value="forks">Sort by forks</Radio.Button>
+          <Radio.Button  value="updated">Sort by updated</Radio.Button>
         </div>
       </div>
 
       <div className={s.list__block}>
-        {RepStore.loading && !RepStore.pageCount ? (
+        {RepStore.loading && !RepStore.itemCount ? (
           <p>Loading...</p>
         ) : RepStore.items && RepStore.items.length > 0 ? (
           RepStore.items.map((item) => (
             <Item
               key={item.id}
+              id={item.id}
               stars={item.stargazers_count}
               forks={item.forks_count}
               updated={item.updated_at}

@@ -16,15 +16,21 @@
 .sort__container {
     display: flex;
     gap: 32px;
+    flex-wrap: wrap;
 
 }
 
 .sort__block {
     display: flex;
     gap: 8px;
+    flex-wrap: wrap;
 }
 
 .list__block {
     display: flex;
     flex-wrap: wrap;
+    gap: 16px;
+    margin-top: 32px;
+    justify-content: center;
+    
 }
