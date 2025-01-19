@@ -1,4 +1,4 @@
-import { makeAutoObservable } from 'mobx';
+import { flow, makeAutoObservable } from 'mobx';
 import { SortField, SortOrder } from '../Models/sortModels';
 import { IRepositoryModel } from '../Models/RepositoryModel';
 import { getRepos } from '../api/getRepos';
@@ -13,7 +13,9 @@ class RepStore {
     pageCount: number = 0;
 
     constructor() {
-        makeAutoObservable(this);
+        makeAutoObservable(this, {
+            getItems: flow
+        });
     }
 
     setItems(items: IRepositoryModel[]) {
@@ -53,23 +55,27 @@ class RepStore {
         this.pageCount = pages;
     }
 
-    async getItems() {
-        this.startLoading();
+    getItems = flow(function* (this: RepStore) {
+        this.loading = true;
+        this.error = null;
+
         try {
-            const newItems = await getRepos(
+            const newItems: { items: IRepositoryModel[]; total_count: number } = yield getRepos(
                 this.currentPage,
                 this.sortCriteria,
-                this.sortOrder,
+                this.sortOrder
             );
-            this.setItems(newItems.items);
-            this.setCurrentPage(this.currentPage++);
-            this.setPageCount(newItems.total_count)
-        } catch (error) {
-            this.setError(`Error: ${error}`);
+            this.items = [...this.items, ...newItems.items];
+            this.pageCount = newItems.total_count;
+            this.currentPage++;
+        } catch (err) {
+            this.setError(
+                err instanceof Error ? err.message : 'Unknown Error'
+            );
         } finally {
-            this.stopLoading();
+            this.loading = false;
         }
-    }
+    });
 
 }
 
