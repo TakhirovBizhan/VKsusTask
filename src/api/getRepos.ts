@@ -1,20 +1,10 @@
-import axios, { AxiosResponse, AxiosError } from "axios";
-import { RepositoryModel } from "../Models/RepositoryModel";
 
-export interface GitHubSearchResponse {
-    total_count: number;
-    incomplete_results: boolean;
-    items: RepositoryModel[];
-}
+import axios from "axios";
+import { GitHubAxiosError, GitHubAxiosResponse, GitHubSearchResponse } from "../Models/RequestModels";
+import { SortField, SortOrder } from "../Models/sortModels";
 
-type GitHubAxiosResponse = AxiosResponse<GitHubSearchResponse>;
-type GitHubAxiosError = AxiosError<{ message: string }>;
 
-// Параметры сортировки
-export type SortOrder = "asc" | "desc";
-export type SortField = "stars" | "forks" | "updated";
-
-const reposPerPage = 10;
+const reposPerPage = 30;
 
 export async function getRepos(
     page: number,
@@ -24,7 +14,8 @@ export async function getRepos(
     const url = `https://api.github.com/search/repositories?q=javascript&sort=${sortField}&order=${sortOrder}&page=${page}&per_page=${reposPerPage}`;
 
     try {
-        const response: GitHubAxiosResponse = await axios.get<GitHubSearchResponse>(url);
+        const response: GitHubAxiosResponse = await axios.get<GitHubSearchResponse>(url,
+            { headers: { Authorization: `Bearer ${import.meta.env.VITE_PERSONAL_ACCESS_TOKEN}` } });
         return response.data;
     } catch (e) {
         if (axios.isAxiosError(e)) {

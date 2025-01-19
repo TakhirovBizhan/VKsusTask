@@ -1,5 +1,5 @@
-import { RepositoryApi } from "./RepositoryApi";
-import { RepositoryModel } from "./RepositoryModel";
+import { RepositoryApi } from "../Models/RepositoryApi";
+import { RepositoryModel } from "../Models/RepositoryModel";
 
 export function normalizeRepository(data: RepositoryApi): RepositoryModel {
     return {

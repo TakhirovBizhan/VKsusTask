@@ -1,4 +1,4 @@
-import { useRepos } from "../../Hooks/useRepos";
+import { useRepos } from "../../api/getRepos";
 
  const List = () => {
 
