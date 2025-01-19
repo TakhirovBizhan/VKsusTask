@@ -1,9 +1,13 @@
 import { Avatar, Card, Typography } from "antd";
 import { cardProps } from "../../Models/CardProps";
+import { DeleteOutlined, EditOutlined} from '@ant-design/icons';
+import RepStore from "../../Store/RepStore";
+import s from './Card.module.css'
 
 const { Title, Text } = Typography;
 
 const Item = ({
+  id,
   stars,
   forks,
   updated,
@@ -13,11 +17,19 @@ const Item = ({
   login,
 }: cardProps) => {
 
+  const onDelete = () => {
+    RepStore.deleteItem(id)
+  }
+  const actions: React.ReactNode[] = [
+    <EditOutlined key="edit" />,
+    <DeleteOutlined key="delete" onClick={onDelete}/>,
+  ];
+
   const formattedDate = new Date(updated).toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit', year: 'numeric' })
 
   return (
-    <Card
-      style={{ width: 300, margin: "16px" }}
+    <Card actions={actions}
+      className={s.card}
       title={name}
       extra={
         isPrivate ? (
@@ -37,6 +49,8 @@ const Item = ({
         Last Updated:
         {formattedDate}
       </Text>
+
+      
     </Card>
   );
 };

@@ -10,7 +10,7 @@ class RepStore {
     currentPage: number = 1;
     loading: boolean = false;
     error: string | null = null;
-    pageCount: number = 0;
+    itemCount: number = 0;
 
     constructor() {
         makeAutoObservable(this, {
@@ -51,8 +51,8 @@ class RepStore {
         this.getItems();
     }
 
-    setPageCount(pages: number) {
-        this.pageCount = pages;
+    setItemCount(itemCount: number) {
+        this.itemCount = itemCount;
     }
 
     getItems = flow(function* (this: RepStore) {
@@ -66,7 +66,7 @@ class RepStore {
                 this.sortOrder
             );
             this.items = [...this.items, ...newItems.items];
-            this.pageCount = newItems.total_count;
+            this.itemCount = newItems.total_count;
             this.currentPage++;
         } catch (err) {
             this.setError(
@@ -76,6 +76,11 @@ class RepStore {
             this.loading = false;
         }
     });
+
+    deleteItem(id: IRepositoryModel['id']) {
+        this.items = this.items.filter((item) => item.id !== id);
+        this.setItemCount(this.itemCount - 1)
+    }
 
 }
 
