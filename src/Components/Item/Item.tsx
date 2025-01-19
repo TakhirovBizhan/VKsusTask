@@ -12,6 +12,9 @@ const Item = ({
   avatarUrl,
   login,
 }: cardProps) => {
+
+  const formattedDate = new Date(updated).toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit', year: 'numeric' })
+
   return (
     <Card
       style={{ width: 300, margin: "16px" }}
@@ -30,7 +33,10 @@ const Item = ({
       <br />
       <Text>Forks: {forks}</Text>
       <br />
-      <Text>Last Updated: {updated}</Text>
+      <Text>
+        Last Updated:
+        {formattedDate}
+      </Text>
     </Card>
   );
 };

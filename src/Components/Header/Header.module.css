@@ -3,6 +3,9 @@ header {
     border-bottom: 2px solid rgb(224, 219, 219);
     background-color:var(--primary-color);
     border-radius: 0px 0px 14px 14px;
+    position: sticky;
+    top: 0;
+    z-index: 1;
 }
 
 .wrapper {
@@ -10,8 +13,6 @@ header {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    position: sticky;
-    z-index: 1;
     max-width: fit-content;
     margin: 0 auto; 
 }
