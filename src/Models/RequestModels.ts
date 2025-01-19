@@ -1,10 +1,10 @@
 import { AxiosError, AxiosResponse } from "axios";
-import { RepositoryModel } from "./RepositoryModel";
+import { IRepositoryModel } from "./RepositoryModel";
 
 export interface GitHubSearchResponse {
     total_count: number;
     incomplete_results: boolean;
-    items: RepositoryModel[];
+    items: IRepositoryModel[];
 }
 
 export type GitHubAxiosResponse = AxiosResponse<GitHubSearchResponse>;

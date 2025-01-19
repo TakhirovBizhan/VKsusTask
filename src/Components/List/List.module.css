@@ -3,8 +3,23 @@
     max-width: 1440px;
     margin: 0 auto; 
     padding: 10px;
+    margin-top: 20px;
 }
 
-p {
+.count {
     margin: 0;
+    color: var(--primary-color);
+    font-size: x-large;
+    font-weight: 500;
+}
+
+.sort__container {
+    display: flex;
+    gap: 32px;
+
+}
+
+.sort__block {
+    display: flex;
+    gap: 8px;
 }

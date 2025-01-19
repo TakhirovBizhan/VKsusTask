@@ -9,10 +9,6 @@ import headerLogo from '../../assets/vkLogo.svg'
                 <h1 className={s.title}>Hi VK!</h1>
                 <img src={headerLogo} alt='VK logo' />
             </div>
-            <div className={s.sort__block}>
-                <button>sort</button>
-                <button>order</button>
-            </div>
         </div>
     </header>
   )
