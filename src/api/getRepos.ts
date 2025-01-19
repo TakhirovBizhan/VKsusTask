@@ -3,7 +3,6 @@ import axios from "axios";
 import { GitHubAxiosError, GitHubAxiosResponse, GitHubSearchResponse } from "../Models/RequestModels";
 import { SortField, SortOrder } from "../Models/sortModels";
 
-
 const reposPerPage = 30;
 
 export async function getRepos(

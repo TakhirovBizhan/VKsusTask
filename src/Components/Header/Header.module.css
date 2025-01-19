@@ -1,0 +1,36 @@
+
+header {
+    border-bottom: 2px solid rgb(224, 219, 219);
+    background-color: #0077ff;
+    border-radius: 0px 0px 14px 14px;
+}
+
+
+
+.wrapper {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    position: sticky;
+    z-index: 1;
+    max-width: fit-content;
+    margin: 0 auto; 
+}
+
+.title {
+    font-size: 30px;
+    margin: 0;
+    color: white;
+}
+
+.title__block {
+    display: flex;
+    gap: 7px;
+}
+
+.sort__block {
+    display: flex;
+    gap: 10px;
+    justify-content: space-evenly;
+}

@@ -1,10 +1,12 @@
-import { useRepos } from "../../api/getRepos";
+import s from './List.module.css'
 
  const List = () => {
-
-  {data, loading, error} = useRepos();
   return (
-    <div>List</div>
+    <div className={s.wrapper}>
+      <div className={s.container}>
+        <p>spot center</p>
+      </div>
+    </div>
   )
 }
 

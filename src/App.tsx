@@ -1,11 +1,13 @@
-
+import Header from "./Components/Header"
+import List from "./Components/List"
 
 function App() {
 
   return (
-    <div>
-      <h1>nothing</h1>
-    </div>
+    <>
+    <Header />
+    <List />
+    </>
   )
 }
 
