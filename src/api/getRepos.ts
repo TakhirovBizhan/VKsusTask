@@ -3,14 +3,13 @@ import axios from "axios";
 import { GitHubAxiosError, GitHubAxiosResponse, GitHubSearchResponse } from "../Models/RequestModels";
 import { SortField, SortOrder } from "../Models/sortModels";
 
-const reposPerPage = 30;
-
 export async function getRepos(
     page: number,
     sortField: SortField,
-    sortOrder: SortOrder
+    sortOrder: SortOrder,
+    itemsPerPage: number
 ) {
-    const url = `https://api.github.com/search/repositories?q=javascript&sort=${sortField}&order=${sortOrder}&page=${page}&per_page=${reposPerPage}`;
+    const url = `https://api.github.com/search/repositories?q=javascript&sort=${sortField}&order=${sortOrder}&page=${page}&per_page=${itemsPerPage}`;
 
     try {
         const response: GitHubAxiosResponse = await axios.get<GitHubSearchResponse>(url,

@@ -11,6 +11,7 @@ class RepStore {
     loading: boolean = false;
     error: string | null = null;
     itemCount: number = 0;
+    itemsPerPage: number = 30;
 
     constructor() {
         makeAutoObservable(this, {
@@ -35,11 +36,13 @@ class RepStore {
     }
 
     setOrderByAsc() {
-        this.sortOrder = 'asc'
+        this.sortOrder = 'asc';
+        this.getItems();
     }
 
     setOrderByDesc() {
-        this.sortOrder = 'desc'
+        this.sortOrder = 'desc';
+        this.getItems();
     }
 
     setCurrentPage(page: number) {
@@ -63,7 +66,8 @@ class RepStore {
             const newItems: { items: IRepositoryModel[]; total_count: number } = yield getRepos(
                 this.currentPage,
                 this.sortCriteria,
-                this.sortOrder
+                this.sortOrder,
+                this.itemsPerPage
             );
             this.items = [...this.items, ...newItems.items];
             this.itemCount = newItems.total_count;

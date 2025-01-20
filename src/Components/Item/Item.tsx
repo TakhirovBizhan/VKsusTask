@@ -1,13 +1,11 @@
 import { Avatar, Card, Typography } from "antd";
 import { cardProps } from "../../Models/CardProps";
 import { DeleteOutlined, EditOutlined} from '@ant-design/icons';
-import RepStore from "../../Store/RepStore";
 import s from './Card.module.css'
 
 const { Title, Text } = Typography;
 
 const Item = ({
-  id,
   stars,
   forks,
   updated,
@@ -15,11 +13,10 @@ const Item = ({
   private: isPrivate,
   avatarUrl,
   login,
+  onDelete
+  
 }: cardProps) => {
 
-  const onDelete = () => {
-    RepStore.deleteItem(id)
-  }
   const actions: React.ReactNode[] = [
     <EditOutlined key="edit" />,
     <DeleteOutlined key="delete" onClick={onDelete}/>,

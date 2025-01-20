@@ -34,3 +34,13 @@
     justify-content: center;
     
 }
+
+.skeleton__card {
+    width: 300px;
+}
+
+.loader {
+    flex-basis: 100%;
+    width: fit-content;
+    margin: auto;
+}

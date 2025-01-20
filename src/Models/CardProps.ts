@@ -1,7 +1,6 @@
 
 
 export type cardProps = {
-    id: number,
     stars: number,
     forks: number,
     updated: string,
@@ -9,4 +8,5 @@ export type cardProps = {
     private: boolean,
     avatarUrl: string,
     login: string,
+    onDelete: () => void
 }
