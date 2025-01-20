@@ -6,26 +6,6 @@
     margin-top: 20px;
 }
 
-.count {
-    margin: 0;
-    color: var(--primary-color);
-    font-size: x-large;
-    font-weight: 500;
-}
-
-.sort__container {
-    display: flex;
-    gap: 32px;
-    flex-wrap: wrap;
-
-}
-
-.sort__block {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-}
-
 .list__block {
     display: flex;
     flex-wrap: wrap;

@@ -23,6 +23,10 @@ class RepStore {
         this.items = items;
     }
 
+    resetItems() {
+        this.items = []
+    }
+
     startLoading() {
         this.loading = true;
     }
@@ -37,11 +41,15 @@ class RepStore {
 
     setOrderByAsc() {
         this.sortOrder = 'asc';
+        this.resetItems();
+        this.setCurrentPage(1)
         this.getItems();
     }
 
     setOrderByDesc() {
         this.sortOrder = 'desc';
+        this.resetItems();
+        this.setCurrentPage(1)
         this.getItems();
     }
 

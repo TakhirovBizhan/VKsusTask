@@ -3,9 +3,10 @@ import { observer } from "mobx-react-lite";
 import RepStore from "../../Store/RepStore";
 import s from "./List.module.css";
 import Item from "../Item";
-import { Radio, Skeleton, Spin } from "antd";
+import { Skeleton, Spin } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 import { debounce } from "lodash";
+import SortCriteria from "../SortCriteria";
 
 const List = observer(() => {
   const [showLoader, setShowLoader] = useState(false);
@@ -16,8 +17,7 @@ const List = observer(() => {
 
     if (scrollTop + clientHeight >= scrollHeight - 10 && !RepStore.loading) {
       incrementPage();
-      setShowLoader(false);
-      RepStore.getItems(); 
+      RepStore.getItems().finally(() => setShowLoader(false))
     }
   }, 200);
 
@@ -41,33 +41,9 @@ const List = observer(() => {
     };
   }, [handleScrollShow]);
 
-  const handleSortAsc = () => {
-    RepStore.setOrderByAsc();
-  };
-
-  const handleSortDesc = () => {
-    RepStore.setOrderByDesc();
-  };
-
   return (
     <div className={s.wrapper}>
-      <div className={s.sort__container}>
-        <p className={s.count}>Repository amount: {RepStore.itemCount}</p>
-        <div className={s.sort__block}>
-          <Radio.Button onClick={handleSortAsc} value="ASC">
-            Sort by asc
-          </Radio.Button>
-          <Radio.Button onClick={handleSortDesc} value="DESC">
-            Sort by desc
-          </Radio.Button>
-        </div>
-        <div className={s.sort__block}>
-          <Radio.Button value="stars">Sort by stars</Radio.Button>
-          <Radio.Button value="forks">Sort by forks</Radio.Button>
-          <Radio.Button value="updated">Sort by updated</Radio.Button>
-        </div>
-      </div>
-
+      <SortCriteria />
       <div className={s.list__block}>
         {RepStore.loading && !RepStore.items.length ? (
           <Spin indicator={<LoadingOutlined spin />} size="large" />
