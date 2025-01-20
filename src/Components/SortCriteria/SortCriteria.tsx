@@ -1,4 +1,4 @@
-import { Radio } from 'antd'
+import { Radio, RadioChangeEvent } from 'antd'
 import s from "./SortCriteria.module.css";
 import RepStore from '../../Store/RepStore'
 
@@ -11,6 +11,10 @@ import RepStore from '../../Store/RepStore'
       const handleSortDesc = () => {
         RepStore.setOrderByDesc();
       };
+
+      const handleSortCriteria = (e: RadioChangeEvent) => {
+        RepStore.setSortCriteria(e.target.value)
+      }
 
 
   return (
@@ -27,7 +31,7 @@ import RepStore from '../../Store/RepStore'
           </Radio.Group>
         </div>
         <div className={s.sort__block}>
-        <Radio.Group defaultValue={'stars'}>
+        <Radio.Group onChange={handleSortCriteria} defaultValue={'stars'}>
           <Radio.Button value="stars">Sort by stars</Radio.Button>
           <Radio.Button value="forks">Sort by forks</Radio.Button>
           <Radio.Button value="updated">Sort by updated</Radio.Button>

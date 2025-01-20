@@ -59,6 +59,8 @@ class RepStore {
 
     setSortCriteria(sortCriteria: SortField) {
         this.sortCriteria = sortCriteria;
+        this.resetItems();
+        this.setCurrentPage(1)
         this.getItems();
     }
 
