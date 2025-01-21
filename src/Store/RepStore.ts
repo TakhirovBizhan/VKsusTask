@@ -2,7 +2,7 @@ import { flow, makeAutoObservable } from 'mobx';
 import { SortField, SortOrder } from '../Models/sortModels';
 import { IRepositoryModel } from '../Models/RepositoryModel';
 import { getRepos } from '../api/getRepos';
-import { modalProps } from '../Models/modalProps';
+import { updateProps } from '../Models/updateProps';
 
 class RepStore {
     items: IRepositoryModel[] = [];
@@ -18,10 +18,6 @@ class RepStore {
         makeAutoObservable(this, {
             getItems: flow
         });
-    }
-
-    setItems(items: IRepositoryModel[]) {
-        this.items = items;
     }
 
     resetItems() {
@@ -69,6 +65,11 @@ class RepStore {
         this.itemCount = itemCount;
     }
 
+    setItems(items: IRepositoryModel[], itemCount: number) {
+        this.items = [...this.items, ...items];
+        this.setItemCount(itemCount)
+    }
+
     getItems = flow(function* (this: RepStore) {
         this.loading = true;
         this.error = null;
@@ -80,8 +81,10 @@ class RepStore {
                 this.sortOrder,
                 this.itemsPerPage
             );
-            this.items = [...this.items, ...newItems.items];
-            this.itemCount = newItems.total_count;
+            if (!newItems || !newItems.items) {
+                throw new Error('Failed to fetch items or response is invalid');
+            }
+            this.setItems(newItems.items, newItems.total_count)
             this.currentPage++;
         } catch (err) {
             this.setError(
@@ -97,7 +100,7 @@ class RepStore {
         this.items = this.items.filter((item) => item.id !== id);
         this.setItemCount(this.itemCount - 1)
     }
-    updateItem(id: IRepositoryModel['id'], formProps: modalProps) {
+    updateItem(id: IRepositoryModel['id'], formProps: updateProps) {
         const newItem = this.items.find((item) => item.id === id);
         if (newItem) {
             newItem.private = formProps.isPrivate;
