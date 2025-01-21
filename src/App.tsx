@@ -1,14 +1,13 @@
-import Header from "./Components/Header"
-import List from "./Components/List"
+import Header from "./Components/Header";
+import List from "./Components/List";
 
 function App() {
-
   return (
     <>
-    <Header />
-    <List />
+      <Header />
+      <List />
     </>
-  )
+  );
 }
 
-export default App
+export default App;

@@ -2,6 +2,7 @@ import { flow, makeAutoObservable } from 'mobx';
 import { SortField, SortOrder } from '../Models/sortModels';
 import { IRepositoryModel } from '../Models/RepositoryModel';
 import { getRepos } from '../api/getRepos';
+import { modalProps } from '../Models/modalProps';
 
 class RepStore {
     items: IRepositoryModel[] = [];
@@ -86,6 +87,7 @@ class RepStore {
             this.setError(
                 err instanceof Error ? err.message : 'Unknown Error'
             );
+            throw err
         } finally {
             this.loading = false;
         }
@@ -94,6 +96,21 @@ class RepStore {
     deleteItem(id: IRepositoryModel['id']) {
         this.items = this.items.filter((item) => item.id !== id);
         this.setItemCount(this.itemCount - 1)
+    }
+    updateItem(id: IRepositoryModel['id'], formProps: modalProps) {
+        const newItem = this.items.find((item) => item.id === id);
+        if (newItem) {
+            newItem.private = formProps.isPrivate;
+            newItem.stargazers_count = formProps.stars;
+            newItem.forks_count = formProps.forks;
+            newItem.owner.login = formProps.login;
+        } else {
+            throw new Error('No item with this id!')
+        }
+    }
+
+    clearError() {
+        this.error = null;
     }
 
 }

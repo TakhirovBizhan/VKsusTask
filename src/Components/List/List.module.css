@@ -23,4 +23,9 @@
     flex-basis: 100%;
     width: fit-content;
     margin: auto;
+    margin-bottom: 40px;
+}
+
+.alert_error {
+    margin-top: 28px;
 }

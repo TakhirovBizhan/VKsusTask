@@ -1,11 +1,14 @@
+import React, { useState } from "react";
 import { Avatar, Card, Typography } from "antd";
+import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import EditModal from "../EditModal";
 import { cardProps } from "../../Models/CardProps";
-import { DeleteOutlined, EditOutlined} from '@ant-design/icons';
-import s from './Card.module.css'
+import s from "./Card.module.css";
 
 const { Title, Text } = Typography;
 
 const Item = ({
+  id,
   stars,
   forks,
   updated,
@@ -13,42 +16,67 @@ const Item = ({
   private: isPrivate,
   avatarUrl,
   login,
-  onDelete
-  
+  onDelete,
 }: cardProps) => {
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const handleEdit = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalVisible(false);
+  };
 
   const actions: React.ReactNode[] = [
-    <EditOutlined key="edit" />,
-    <DeleteOutlined key="delete" onClick={onDelete}/>,
+    <EditOutlined key="edit" onClick={handleEdit} />,
+    <DeleteOutlined key="delete" onClick={onDelete} />,
   ];
 
-  const formattedDate = new Date(updated).toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit', year: 'numeric' })
+  const formattedDate = new Date(updated).toLocaleDateString("ru-RU", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  });
 
   return (
-    <Card actions={actions}
-      className={s.card}
-      title={name}
-      extra={
-        isPrivate ? (
-          <Text type="danger">Private</Text>
-        ) : (
-          <Text type="success">Public</Text>
-        )
-      }
-    >
-      <Avatar src={avatarUrl} alt={login} />
-      <Title level={4}>{login}</Title>
-      <Text>Stars: {stars}</Text>
-      <br />
-      <Text>Forks: {forks}</Text>
-      <br />
-      <Text>
-        Last Updated:
-        {formattedDate}
-      </Text>
+    <>
+      <Card
+        actions={actions}
+        className={s.card}
+        title={name}
+        extra={
+          isPrivate ? (
+            <Text type="danger">Private</Text>
+          ) : (
+            <Text type="success">Public</Text>
+          )
+        }
+      >
+          
+        
+        <Avatar src={avatarUrl} alt={login} />
+        <Title level={4}>{login}</Title>
+        <div className={s.card__content}>
+        <Text>Stars: {stars}</Text>
+        <Text>Forks: {forks}</Text>
+        <Text>
+          Last Updated:
+          {formattedDate}
+        </Text>
+        </div>
+      </Card>
 
-      
-    </Card>
+      <EditModal
+        id={id}
+        visible={isModalVisible}
+        onClose={handleCloseModal}
+          stars={stars}
+          forks={forks}
+          isPrivate={isPrivate}
+          login={login}
+      />
+    </>
   );
 };
 

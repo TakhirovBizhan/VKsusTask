@@ -3,7 +3,7 @@ import { observer } from "mobx-react-lite";
 import RepStore from "../../Store/RepStore";
 import s from "./List.module.css";
 import Item from "../Item";
-import { Skeleton, Spin } from "antd";
+import { Skeleton, Spin, Button, Alert } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 import { debounce } from "lodash";
 import SortCriteria from "../SortCriteria";
@@ -12,27 +12,48 @@ const List = observer(() => {
   const [showLoader, setShowLoader] = useState(false);
 
   const handleScroll = debounce(() => {
-    if (RepStore.loading) return;
+    if (RepStore.loading || RepStore.error) return;
+
     const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
 
-    if (scrollTop + clientHeight >= scrollHeight - 10 && !RepStore.loading) {
+    if (scrollTop + clientHeight >= scrollHeight - 10) {
       incrementPage();
-      RepStore.getItems().finally(() => setShowLoader(false))
+      loadItems();
     }
   }, 200);
-
-  const handleScrollShow = useCallback(() => {
-    setShowLoader(true);
-    handleScroll();
-  }, [handleScroll])
 
   const incrementPage = () => {
     RepStore.setCurrentPage(RepStore.currentPage + 1);
   };
+  const loadItems = () => {
+    if (RepStore.loading || RepStore.error) {
+      return;
+    }
+
+    setShowLoader(true);
+
+    RepStore.getItems()
+      .catch((error) => {
+        console.error("Error loading items:", error);
+      })
+      .finally(() => {
+        setShowLoader(false);
+      });
+  };
+
+  const handleRetry = () => {
+    RepStore.clearError();
+    loadItems();
+  };
+
+  const handleScrollShow = useCallback(() => {
+    setShowLoader(true);
+    handleScroll();
+  }, [handleScroll]);
 
   useEffect(() => {
-    if (!RepStore.items.length && !RepStore.loading) {
-      RepStore.getItems();
+    if (!RepStore.items.length && !RepStore.loading && !RepStore.error) {
+      loadItems();
     }
 
     window.addEventListener("scroll", handleScrollShow);
@@ -44,6 +65,20 @@ const List = observer(() => {
   return (
     <div className={s.wrapper}>
       <SortCriteria />
+      {RepStore.error && (
+        <Alert
+          className={s.alert_error}
+          message="Error"
+          description="An error occurred while loading items. Please try again."
+          type="error"
+          showIcon
+          action={
+            <Button size="small" type="primary" onClick={handleRetry}>
+              Retry
+            </Button>
+          }
+        />
+      )}
       <div className={s.list__block}>
         {RepStore.loading && !RepStore.items.length ? (
           <Spin indicator={<LoadingOutlined spin />} size="large" />
@@ -51,6 +86,7 @@ const List = observer(() => {
           <>
             {RepStore.items.map((item) => (
               <Item
+                id={item.id}
                 key={item.id}
                 stars={item.stargazers_count}
                 forks={item.forks_count}
@@ -69,7 +105,6 @@ const List = observer(() => {
                 size="large"
               />
             )}
-
             {RepStore.loading &&
               Array.from({ length: RepStore.itemsPerPage }).map((_, index) => (
                 <Skeleton
@@ -82,7 +117,7 @@ const List = observer(() => {
               ))}
           </>
         ) : (
-          <p>No data</p>
+          !RepStore.error && <p>No data</p>
         )}
       </div>
     </div>

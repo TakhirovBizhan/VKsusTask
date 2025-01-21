@@ -13,7 +13,7 @@ export async function getRepos(
 
     try {
         const response: GitHubAxiosResponse = await axios.get<GitHubSearchResponse>(url,
-            { headers: { Authorization: `Bearer ${import.meta.env.VITE_PERSONAL_ACCESS_TOKEN}` } });
+            { headers: { Authorization: `Bearer ${process.env.VITE_PERSONAL_ACCESS_TOKEN}` } });
         return response.data;
     } catch (e) {
         if (axios.isAxiosError(e)) {
