@@ -21,10 +21,8 @@ export async function getRepos(
             const status = error.response?.status || 500;
             const message = error.response?.data.message || error.message || "Unknown error";
 
-            console.error(`GitHub API error: ${message} (Status: ${status})`);
             throw new Error(`${message} (Status: ${status})`);
         } else {
-            console.error("Unexpected error:", e);
             throw new Error("An unexpected error occurred. Please try again.");
         }
     }
