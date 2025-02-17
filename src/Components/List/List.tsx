@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useState } from "react";
-import { observer } from "mobx-react-lite";
 import RepStore from "../../Store/RepStore";
 import s from "./List.module.css";
 import Item from "../Item";
 import { Skeleton, Spin, Button, Alert } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 import { debounce } from "lodash";
+import { observer } from "mobx-react-lite";
 
 const List = observer(() => {
   const [showLoader, setShowLoader] = useState(false);

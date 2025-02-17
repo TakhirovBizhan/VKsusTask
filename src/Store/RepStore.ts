@@ -12,7 +12,7 @@ class RepStore {
     loading: boolean = false;
     error: string | null = null;
     itemCount: number = 0;
-    itemsPerPage: number = 30;
+    itemsPerPage: number = 20;
 
     constructor() {
         makeAutoObservable(this, {
