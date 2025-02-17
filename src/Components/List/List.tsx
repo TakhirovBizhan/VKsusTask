@@ -6,7 +6,6 @@ import Item from "../Item";
 import { Skeleton, Spin, Button, Alert } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 import { debounce } from "lodash";
-import SortCriteria from "../SortCriteria";
 
 const List = observer(() => {
   const [showLoader, setShowLoader] = useState(false);
@@ -63,8 +62,7 @@ const List = observer(() => {
   }, [handleScrollShow]);
 
   return (
-    <div className={s.wrapper}>
-      <SortCriteria />
+    <>
       {RepStore.error && (
         <Alert
           className={s.alert_error}
@@ -120,7 +118,7 @@ const List = observer(() => {
           !RepStore.error && <p>No data</p>
         )}
       </div>
-    </div>
+    </>
   );
 });
 

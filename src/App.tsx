@@ -1,11 +1,11 @@
 import Header from "./Components/Header";
-import List from "./Components/List";
+import { MainPage } from "./pages/mainPage/MainPage";
 
 function App() {
   return (
     <>
       <Header />
-      <List />
+      <MainPage />
     </>
   );
 }
