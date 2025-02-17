@@ -33,3 +33,7 @@ header {
     gap: 10px;
     justify-content: space-evenly;
 }
+
+.logo {
+    height: 40px;
+}
