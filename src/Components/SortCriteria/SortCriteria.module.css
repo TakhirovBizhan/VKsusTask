@@ -5,15 +5,24 @@
     font-weight: 500;
 }
 
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
 .sort__container {
     display: flex;
     gap: 32px;
     flex-wrap: wrap;
-
 }
 
 .sort__block {
     display: flex;
     gap: 8px;
     flex-wrap: wrap;
+}
+
+.input {
+    width: fit-content;
 }

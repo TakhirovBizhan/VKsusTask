@@ -1,4 +1,5 @@
 import { Input } from "antd";
+import s from "./SearchInput.module.css";
 
 const SearchInput = () => {
   const onSearch = (value: string) => {
@@ -7,7 +8,8 @@ const SearchInput = () => {
 
   return (
     <Input.Search
-      placeholder="input search text"
+      className={s.input}
+      placeholder="search..."
       onSearch={onSearch}
       enterButton
     />
