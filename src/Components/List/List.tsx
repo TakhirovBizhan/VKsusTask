@@ -85,6 +85,7 @@ const List = observer(() => {
                 key={item.id}
                 stars={item.stargazers_count}
                 forks={item.forks_count}
+                url={item.html_url}
                 updated={item.updated_at}
                 name={item.name}
                 private={item.private}

@@ -16,6 +16,7 @@ const Item = ({
   private: isPrivate,
   avatarUrl,
   login,
+  url,
   onDelete,
 }: cardProps) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -53,17 +54,16 @@ const Item = ({
           )
         }
       >
-          
-        
         <Avatar src={avatarUrl} alt={login} />
         <Title level={4}>{login}</Title>
         <div className={s.card__content}>
-        <Text>Stars: {stars}</Text>
-        <Text>Forks: {forks}</Text>
-        <Text>
-          Last Updated:
-          {formattedDate}
-        </Text>
+          <Text>Stars: {stars}</Text>
+          <Text>Forks: {forks}</Text>
+          <Text>
+            Last Updated:
+            {formattedDate}
+          </Text>
+          <a href={url}>link</a>
         </div>
       </Card>
 
@@ -71,10 +71,10 @@ const Item = ({
         id={id}
         visible={isModalVisible}
         onClose={handleCloseModal}
-          stars={stars}
-          forks={forks}
-          isPrivate={isPrivate}
-          login={login}
+        stars={stars}
+        forks={forks}
+        isPrivate={isPrivate}
+        login={login}
       />
     </>
   );
