@@ -11,8 +11,7 @@ header {
 .wrapper {
     padding: 10px;
     display: flex;
-    flex-direction: column;
-    gap: 10px;
+    gap: 20px;
     max-width: fit-content;
     margin: 0 auto; 
 }
