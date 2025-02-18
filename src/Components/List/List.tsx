@@ -12,7 +12,6 @@ const List = observer(() => {
 
   const loadItems = useCallback(() => {
     if (RepStore.loading || RepStore.error) return;
-
     setShowLoader(true);
     RepStore.getItems()
       .catch((error) => {

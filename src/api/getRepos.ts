@@ -7,16 +7,33 @@ export async function getRepos(
     page: number,
     sortField: SortField,
     sortOrder: SortOrder,
-    itemsPerPage: number
+    itemsPerPage: number,
+    searchTerms: string
 ) {
-    const url = `https://api.github.com/search/repositories?q=javascript&sort=${sortField}&order=${sortOrder}&page=${page}&per_page=${itemsPerPage}`;
 
+
+
+    const url = `https://api.github.com/search/repositories${searchTerms ? `?q=${encodeURIComponent(searchTerms)}` : '?q=stars'
+        }&sort=${sortField}&order=${sortOrder}&page=${page}&per_page=${itemsPerPage}`;
     try {
         const response: GitHubAxiosResponse = await axios.get<GitHubSearchResponse>(url,
-            { headers: { Authorization: `Bearer ${process.env.VITE_PERSONAL_ACCESS_TOKEN}` } });
+            {
+                headers: { Authorization: `Bearer ${process.env.VITE_PERSONAL_ACCESS_TOKEN}` },
+            });
+
+        if (response.data.total_count === 0) {
+            return { items: [], total_count: 0 };
+        }
+
+
         return response.data;
     } catch (e) {
         if (axios.isAxiosError(e)) {
+            if (axios.isCancel(e)) {
+                console.warn("Запрос отменён:", e.message);
+                return { items: [], total_count: 0 };
+            }
+
             const error = e as GitHubAxiosError;
             const status = error.response?.status || 500;
             const message = error.response?.data.message || error.message || "Unknown error";

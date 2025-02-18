@@ -2,6 +2,7 @@ import { Input, Radio, RadioChangeEvent } from "antd";
 import s from "./SortCriteria.module.css";
 import RepStore from "../../Store/RepStore";
 import { observer } from "mobx-react-lite";
+import { debounce } from "lodash";
 
 const SortCriteria = observer(() => {
   const handleSortAsc = () => {
@@ -16,8 +17,8 @@ const SortCriteria = observer(() => {
     RepStore.setSortCriteria(e.target.value);
   };
 
-  const onSearch = (value: string) => {
-    console.log(value);
+  const onSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    RepStore.setSearchTerm(e.target.value);
   };
   return (
     <div className={s.container}>
@@ -25,12 +26,6 @@ const SortCriteria = observer(() => {
         <p className={s.count}>Repository amount: {RepStore.itemCount}</p>
       </div>
       <div className={s.sort__container}>
-        <Input.Search
-          className={s.input}
-          placeholder="search..."
-          onSearch={onSearch}
-          enterButton
-        />
         <div className={s.sort__block}>
           <Radio.Group defaultValue={"ASC"}>
             <Radio.Button onClick={handleSortAsc} value="ASC">
@@ -48,6 +43,11 @@ const SortCriteria = observer(() => {
             <Radio.Button value="updated">Sort by updated</Radio.Button>
           </Radio.Group>
         </div>
+        <Input.Search
+          className={s.input}
+          placeholder="search..."
+          onChange={debounce(onSearch, 800)}
+        />
       </div>
     </div>
   );

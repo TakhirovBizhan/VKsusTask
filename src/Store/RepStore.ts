@@ -13,6 +13,7 @@ class RepStore {
     error: string | null = null;
     itemCount: number = 0;
     itemsPerPage: number = 20;
+    searchTerms: string = '';
 
     constructor() {
         makeAutoObservable(this, {
@@ -57,7 +58,14 @@ class RepStore {
     setSortCriteria(sortCriteria: SortField) {
         this.sortCriteria = sortCriteria;
         this.resetItems();
-        this.setCurrentPage(1)
+        this.setCurrentPage(1);
+        this.getItems();
+    }
+
+    setSearchTerm(searchTerm: string) {
+        this.searchTerms = searchTerm;
+        this.resetItems();
+        this.setCurrentPage(1);
         this.getItems();
     }
 
@@ -74,12 +82,14 @@ class RepStore {
         this.loading = true;
         this.error = null;
 
+        // сюда надо добавить проверку на то повторный запрос
         try {
             const newItems: { items: IRepositoryModel[]; total_count: number } = yield getRepos(
                 this.currentPage,
                 this.sortCriteria,
                 this.sortOrder,
-                this.itemsPerPage
+                this.itemsPerPage,
+                this.searchTerms
             );
             if (!newItems || !newItems.items) {
                 throw new Error('Failed to fetch items or response is invalid');
