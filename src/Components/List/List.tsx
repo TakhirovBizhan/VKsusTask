@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, useMemo } from "react";
 import RepStore from "../../Store/RepStore";
 import s from "./List.module.css";
 import Item from "../Item";
@@ -10,27 +10,10 @@ import { observer } from "mobx-react-lite";
 const List = observer(() => {
   const [showLoader, setShowLoader] = useState(false);
 
-  const handleScroll = debounce(() => {
+  const loadItems = useCallback(() => {
     if (RepStore.loading || RepStore.error) return;
 
-    const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
-
-    if (scrollTop + clientHeight >= scrollHeight - 10) {
-      incrementPage();
-      loadItems();
-    }
-  }, 200);
-
-  const incrementPage = () => {
-    RepStore.setCurrentPage(RepStore.currentPage + 1);
-  };
-  const loadItems = () => {
-    if (RepStore.loading || RepStore.error) {
-      return;
-    }
-
     setShowLoader(true);
-
     RepStore.getItems()
       .catch((error) => {
         console.error("Error loading items:", error);
@@ -38,7 +21,22 @@ const List = observer(() => {
       .finally(() => {
         setShowLoader(false);
       });
-  };
+  }, []);
+
+  const handleScroll = useMemo(
+    () =>
+      debounce(() => {
+        if (RepStore.loading || RepStore.error) return;
+
+        const { scrollTop, scrollHeight, clientHeight } =
+          document.documentElement;
+        if (scrollTop + clientHeight >= scrollHeight - 10) {
+          RepStore.setCurrentPage(RepStore.currentPage + 1);
+          loadItems();
+        }
+      }, 500),
+    [loadItems]
+  );
 
   const handleRetry = () => {
     RepStore.clearError();
@@ -59,7 +57,7 @@ const List = observer(() => {
     return () => {
       window.removeEventListener("scroll", handleScrollShow);
     };
-  }, [handleScrollShow]);
+  }, [handleScrollShow, loadItems]);
 
   return (
     <>
