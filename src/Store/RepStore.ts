@@ -3,6 +3,7 @@ import { SortField, SortOrder } from '../Models/sortModels';
 import { IRepositoryModel } from '../Models/RepositoryModel';
 import { getRepos } from '../api/getRepos';
 import { updateProps } from '../Models/updateProps';
+import { useAuth0 } from '@auth0/auth0-react';
 
 class RepStore {
     items: IRepositoryModel[] = [];
@@ -81,6 +82,8 @@ class RepStore {
     getItems = flow(function* (this: RepStore) {
         this.loading = true;
         this.error = null;
+        const { getAccessTokenSilently } = useAuth0();
+        const token: string = yield getAccessTokenSilently();
 
         // сюда надо добавить проверку на то повторный запрос
         try {
@@ -89,7 +92,8 @@ class RepStore {
                 this.sortCriteria,
                 this.sortOrder,
                 this.itemsPerPage,
-                this.searchTerms
+                this.searchTerms,
+                token
             );
             if (!newItems || !newItems.items) {
                 throw new Error('Failed to fetch items or response is invalid');

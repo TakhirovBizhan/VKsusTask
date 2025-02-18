@@ -8,17 +8,16 @@ export async function getRepos(
     sortField: SortField,
     sortOrder: SortOrder,
     itemsPerPage: number,
-    searchTerms: string
+    searchTerms: string,
+    token: string
+
 ) {
-
-
-
     const url = `https://api.github.com/search/repositories${searchTerms ? `?q=${encodeURIComponent(searchTerms)}` : '?q=stars'
         }&sort=${sortField}&order=${sortOrder}&page=${page}&per_page=${itemsPerPage}`;
     try {
         const response: GitHubAxiosResponse = await axios.get<GitHubSearchResponse>(url,
             {
-                headers: { Authorization: `Bearer ${process.env.VITE_PERSONAL_ACCESS_TOKEN}` },
+                headers: { Authorization: `Bearer ${token}` },
             });
 
         if (response.data.total_count === 0) {
